@@ -11,6 +11,9 @@
 'https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem
 'https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk
 
+Wscript.Echo _ 
+ "Date: " & FormatDateTime(now,2) & vbCrLf & _
+ "Time: " & FormatDateTime(now,4) & vbCrLf
 
 
 Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")
