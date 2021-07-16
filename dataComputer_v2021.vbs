@@ -119,6 +119,7 @@ Set colPStorage = objWMIService.ExecQuery("Select * from Win32_LogicalDisk WHERE
 For Each objPStorage in colPStorage
   WScript.Echo _ 
   "C Size: " & Round(objPStorage.Size/1073741824,2) & vbCrLf & _
+  "C VolumeName: " & objPStorage.VolumeName & vbCrLf & _
   "C FreeSpace: " & Round(CDbl(objPStorage.FreeSpace)/1073741824,2) & vbCrLf 
 Next
 
@@ -140,14 +141,27 @@ Next
 Set objWMIService = GetObject("winmgmts:\\.\root\CIMV2")
 Set colItems = objWMIService.ExecQuery("SELECT * FROM Win32_ComputerSystem")
 For Each objItem In colItems
-  WScript.Echo _ 
-  "Name: " & objItem.Name & vbCrLf & _
-  "Manufacturer: " & objItem.Manufacturer & vbCrLf & _
-  "Model: " & objItem.Model & vbCrLf & _
-  "User name: " & objItem.UserName & vbCrLf & _
-  "System type: " & objItem.PCSystemType  & vbCrLf & _
-  "System type2: " & objItem.SystemType & vbCrLf & _
-  "GB TotalPhysicalMemory available after OS: " & objItem.TotalPhysicalMemory/1073741824 & vbCrLf 
+	
+	Select case objItem.PCSystemType
+		case 0 typem="Unspecified"
+		case 1 typem="Desktop"
+		case 2 typem="Mobile"
+		case 3 typem="Workstation"
+		case 4 typem="Enterprise Server"
+		case 5 typem="Small Office and Home Office (SOHO) Server"
+		case 6 typem="Appliance PC"
+		case 7 typem="Performance Server"
+		case 8 typem="Maximum"
+	End Select
+
+	WScript.Echo _ 
+	"Name: " & objItem.Name & vbCrLf & _
+	"Manufacturer: " & objItem.Manufacturer & vbCrLf & _
+	"Model: " & objItem.Model & vbCrLf & _
+	"User name: " & objItem.UserName & vbCrLf & _
+	"System type: " & typem  & vbCrLf & _
+	"System type2: " & objItem.SystemType & vbCrLf & _
+	"GB TotalPhysicalMemory available after OS: " & objItem.TotalPhysicalMemory/1073741824 & vbCrLf 
 Next
 
 'List SO information
